@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dominion Search</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Dominion Search</h1>
+      <span class="version" id="version"></span>
+      <button id="show-primer" class="ghost" type="button">Syntax</button>
+    </header>
+
+    <div id="searchview">
+      <form id="searchbar" autocomplete="off">
+        <input
+          id="q"
+          type="search"
+          placeholder='e.g. t:attack cost:3    set:(empires or adventures)    o:"gain a Gold"'
+          aria-label="Query"
+        />
+      </form>
+
+      <div class="toolbar">
+        <label><input type="checkbox" id="piles" /> piles</label>
+        <label>
+          group by
+          <select id="groupby">
+            <option value="">—</option>
+            <option>set</option>
+            <option>type</option>
+            <option>cost</option>
+            <option>debt</option>
+            <option>potion</option>
+            <option>edition</option>
+            <option>artist</option>
+            <option>pile</option>
+          </select>
+        </label>
+        <span class="status" id="status"></span>
+      </div>
+
+      <div id="groups"></div>
+      <ul id="results"></ul>
+    </div>
+
+    <section id="primer" hidden>
+      <div class="primer-head">
+        <h2>Query syntax</h2>
+        <button id="back-to-search" class="ghost" type="button">← Back to search</button>
+      </div>
+      <div id="primer-body"></div>
+    </section>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

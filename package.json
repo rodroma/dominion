@@ -1,0 +1,22 @@
+{
+  "name": "dominion-search",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Scryfall-like search over a local Dominion card dataset",
+  "scripts": {
+    "build": "node src/build/build-bundle.ts",
+    "build:site": "npm run build && npm run compile && node src/build/build-site.ts",
+    "scrape": "node src/build/scrape.ts",
+    "compile": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "cli": "node src/cli.ts",
+    "test": "node --test \"tests/*.test.ts\"",
+    "serve": "node src/build/serve.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "fengari": "^0.1.5",
+    "typescript": "^5.8.0"
+  }
+}

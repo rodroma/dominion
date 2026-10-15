@@ -1,0 +1,10 @@
+export * from "./types.ts";
+export * from "./bundle.ts";
+export * from "./cost.ts";
+export * from "./sets.ts";
+export * from "./ast.ts";
+export { tokenize, QueryError } from "./lexer.ts";
+export { parse } from "./parser.ts";
+export { evaluate } from "./eval.ts";
+export { FIELDS, ALIASES, resolveField, fieldExists } from "./fields.ts";
+export { Engine, GROUP_FIELDS, type GroupField, type SearchResult, type SearchOptions } from "./engine.ts";

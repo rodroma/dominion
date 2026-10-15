@@ -1,0 +1,6 @@
+node_modules/
+dist/
+public/
+*.br
+!data/*.br
+.DS_Store
