@@ -7,6 +7,9 @@
   "scripts": {
     "build": "node src/build/build-bundle.ts",
     "build:site": "npm run compile && node dist/build/build-bundle.js && node dist/build/build-site.js",
+    "preview": "npm run build:site && npx --yes wrangler dev",
+    "deploy": "npm run build:site && npx --yes wrangler deploy",
+    "deploy:preview": "npm run build:site && npx --yes wrangler versions upload",
     "scrape": "node src/build/scrape.ts",
     "compile": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",

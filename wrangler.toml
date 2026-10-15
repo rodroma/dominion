@@ -1,8 +1,9 @@
-# Cloudflare Pages project configuration.
+# Cloudflare Workers configuration (static assets, no server code).
 #
-# Used by the CLI (`npx wrangler pages deploy`) and recognized by the Pages
-# dashboard when this repo is connected via Git. If your Pages project has a
-# different name, change it here to match.
+# The Worker just serves the assembled `public/` directory. `_headers` and
+# `_redirects` files inside the assets directory are honored.
 name = "dominion"
-pages_build_output_dir = "public"
 compatibility_date = "2025-01-01"
+
+[assets]
+directory = "public"
