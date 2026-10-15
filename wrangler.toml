@@ -1,0 +1,8 @@
+# Cloudflare Pages project configuration.
+#
+# Used by the CLI (`npx wrangler pages deploy`) and recognized by the Pages
+# dashboard when this repo is connected via Git. If your Pages project has a
+# different name, change it here to match.
+name = "dominion"
+pages_build_output_dir = "public"
+compatibility_date = "2025-01-01"

@@ -6,7 +6,7 @@
   "description": "Scryfall-like search over a local Dominion card dataset",
   "scripts": {
     "build": "node src/build/build-bundle.ts",
-    "build:site": "npm run build && npm run compile && node src/build/build-site.ts",
+    "build:site": "npm run compile && node dist/build/build-bundle.js && node dist/build/build-site.js",
     "scrape": "node src/build/scrape.ts",
     "compile": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",

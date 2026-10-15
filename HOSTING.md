@@ -37,12 +37,37 @@ npm run build:site     # npm run build && npm run compile && assemble public/
 
 ### Cloudflare Pages — recommended
 
-- Free, **unlimited bandwidth**, global edge, per-PR preview URLs.
-- Set *Build command* = `npm run build:site`, *Build output directory* = `public`.
-- Add `public/_headers` (or a root `_headers` copied in) to set
-  `Cache-Control: public, max-age=31536000, immutable` for
-  `data/bundle.*.json*`, `dist/*`, and a short TTL for `index.html`/`sw.js`.
-- Custom domain + automatic HTTPS.
+Free, **unlimited bandwidth**, global edge, per-PR previews, custom headers.
+
+**Connect via the dashboard (Git integration):**
+
+1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** →
+   **Connect to Git** → pick `rodroma/dominion`.
+2. Build settings:
+   - **Framework preset:** None
+   - **Build command:** `npm run build:site`
+   - **Build output directory:** `public`
+   - **Environment variables:** `NODE_VERSION` = `22` (optional; the build
+     runs compiled JS, so any Node ≥ 18 works)
+3. Save and deploy. Every push to `main` redeploys; PRs get preview URLs.
+
+**Or deploy from the CLI** (no Git integration):
+
+```bash
+npm run build:site
+npx wrangler pages deploy public --project-name dominion
+```
+
+**Caching & headers** are handled by `app/_headers`, which `build:site` copies
+to `public/_headers`: content-hashed assets get
+`Cache-Control: public, max-age=31536000, immutable`; the app shell, `sw.js`
+and the unhashed `data/bundle.json` revalidate so updates land.
+
+**Config files:** `wrangler.toml` sets the project name and
+`pages_build_output_dir = "public"` (used by the CLI and recognized by the
+dashboard).
+
+Custom domain + automatic HTTPS are available in the project settings.
 
 ### GitHub Pages
 
