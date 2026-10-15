@@ -78,6 +78,25 @@ test("set umbrella matching", () => {
   assert.ok(!names("set:dominion").includes("Smithy") === false);
 });
 
+test("enum fields (type, edition) accept prefixes", () => {
+  // Partial type names match by prefix, like fuzzy set names (s:empi → Empires).
+  assert.deepEqual(names("t:even"), names("t:event"));
+  assert.ok(names("t:even").length > 0);
+
+  // Prefix, not substring: t:action must only return actual Actions
+  // (substring matching would also pull in Reaction, which contains "action").
+  assert.deepEqual(names("t:act"), names("t:action"));
+  assert.ok(engine.search("t:action").cards.every((c) => c.types.includes("Action")));
+  assert.ok(engine.search("t:reaction").cards.every((c) => c.types.includes("Reaction")));
+
+  // `=` stays exact.
+  assert.equal(engine.count("t=even"), 0);
+  assert.equal(engine.count("t=event"), names("t:event").length);
+
+  // Editions too: ed:2 → 2E.
+  assert.deepEqual(names("ed:2"), names("ed:2e"));
+});
+
 test("boolean operators, negation and parens", () => {
   assert.equal(names("t:attack cost:3 -set:seaside").length, 7);
   const a = engine.count("set:(empires or adventures) t:duration");

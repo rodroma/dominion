@@ -28,6 +28,33 @@ function strMatch(hay: string, op: Op, value: ScalarValue): boolean {
   return h.includes(v);
 }
 
+/**
+ * Match one of a card's enumerated values (types, editions). `=` is exact;
+ * `:` and a bare value also accept a prefix, so `t:even` finds Event and
+ * `ed:2` finds 2E. Prefix — not substring — is deliberate: substring would
+ * make `t:action` also match Reaction.
+ */
+function enumMatch(values: string[], op: Op, value: ScalarValue): boolean {
+  if (value.t === "regex") {
+    let flags = value.flags;
+    if (!flags.includes("i")) flags += "i";
+    let re: RegExp;
+    try {
+      re = new RegExp(value.v, flags);
+    } catch {
+      throw new QueryError(`Invalid regex /${value.v}/`);
+    }
+    const m = values.some((x) => re.test(x));
+    return op === "!=" ? !m : m;
+  }
+  const v = value.v.toLowerCase();
+  const exact = values.some((x) => x.toLowerCase() === v);
+  const prefix = values.some((x) => x.toLowerCase().startsWith(v));
+  if (op === "=") return exact;
+  if (op === "!=") return !prefix;
+  return prefix;
+}
+
 function numMatch(cardVal: number, op: Op, value: ScalarValue): boolean {
   const n = Number(value.v);
   if (Number.isNaN(n)) return false;
@@ -104,17 +131,15 @@ const setTest: FieldTester = (card, op, value) => {
   return op === "!=" ? !inSet : inSet;
 };
 
-const typeTest: FieldTester = (card, op, value) => {
-  const v = value.v.toLowerCase();
-  const has = card.types.some((t) => t.toLowerCase() === v);
-  return op === "!=" ? !has : has;
-};
+const typeTest: FieldTester = (card, op, value) => enumMatch(card.types, op, value);
 
 const isTest: FieldTester = (card, op, value) => {
-  const v = value.v.toLowerCase();
-  const fn = IS_FLAGS[v];
-  const res = fn ? fn(card) : card.types.some((t) => t.toLowerCase() === v);
-  return op === "!=" ? !res : res;
+  if (value.t !== "regex") {
+    const fn = IS_FLAGS[value.v.toLowerCase()];
+    if (fn) return boolMatch(fn(card), op);
+  }
+  // Unknown flag: fall back to type matching (which accepts prefixes).
+  return enumMatch(card.types, op, value);
 };
 
 const hasTest: FieldTester = (card, op, value) => {
@@ -124,11 +149,7 @@ const hasTest: FieldTester = (card, op, value) => {
   return boolMatch(fn(card), op);
 };
 
-const editionTest: FieldTester = (card, op, value) => {
-  const v = value.v.toLowerCase();
-  const match = card.edition.toLowerCase() === v;
-  return op === "!=" ? !match : match;
-};
+const editionTest: FieldTester = (card, op, value) => enumMatch([card.edition], op, value);
 
 export const FIELDS: Record<string, FieldTester> = {
   name: (c, op, v) => strMatch(c.name, op, v),

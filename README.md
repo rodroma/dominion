@@ -22,6 +22,10 @@ Operators: `:`, `=`, `!=`, `<`, `<=`, `>`, `>=`. Combine with implicit AND,
 `or`, `not` / `-`, and parentheses. Values may be quoted (`o:"gain a Gold"`)
 or regex (`o:/trash.*Gold/`).
 
+Matching: `=` is exact; `:` (and a bare value) matches loosely. The enum
+fields accept **prefixes / aliases** — `t:even` → Event, `s:empi` → Empires,
+`ed:2` → 2E — while `name`, `text`, `artist` and `pile` match substrings.
+
 ```text
 t:attack cost:3                       # plain $3 Attacks
 set:(empires or adventures) t:duration

@@ -162,13 +162,13 @@ const FIELD_ROWS = [
     f: "type",
     a: "t",
     q: "t:attack",
-    d: "A card type: Action, Treasure, Victory, Attack, Duration, Reaction, Night, Event, Landmark, Project, Way, Trait, Ally, …",
+    d: "A card type: Action, Treasure, Victory, Attack, Duration, Reaction, Night, Event, Landmark, Project, Way, Trait, Ally, … Partial names work by prefix: t:even → Event.",
   },
   {
     f: "set",
     a: "s · e · expansion",
     q: "set:adventures",
-    d: "An expansion. Aliases: base→Dominion, dark→Dark Ages, c&g→Cornucopia & Guilds. Umbrella: set:cornucopia also matches Cornucopia & Guilds.",
+    d: "An expansion; a partial name works too (s:empi → Empires). Aliases: base→Dominion, dark→Dark Ages, c&g→Cornucopia & Guilds. Umbrella: set:cornucopia also matches Cornucopia & Guilds.",
   },
   {
     f: "cost",
@@ -186,7 +186,7 @@ const FIELD_ROWS = [
   },
   { f: "artist", a: "a", q: 'a:"Claus Stephan"', d: "Illustrator name." },
   { f: "supply", a: "count", q: "supply:10", d: "Number of copies in the Supply." },
-  { f: "edition", a: "ed", q: "edition:2e", d: "Edition: 1e or 2e." },
+  { f: "edition", a: "ed", q: "edition:2e", d: "Edition: 1e or 2e. Partial works: ed:2." },
   {
     f: "pile",
     a: "parent · in",
@@ -242,6 +242,7 @@ function buildPrimer() {
   const valUl = el("ul", "rules");
   const valItems = [
     ["Unquoted", "t:attack", "— a single word, no spaces."],
+    ["Partial", "t:even", "— type / set / edition accept prefixes (t:even → Event)."],
     ["Quoted", 'o:"gain a Gold"', "— keep spaces / punctuation."],
     ["Regex", "o:/trash.*Gold/", "— case-insensitive; . also matches newlines."],
     ["Choice list", "set:(empires or adventures)", "— matches any listed value."],
