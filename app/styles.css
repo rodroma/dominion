@@ -175,6 +175,7 @@ button.more:hover { text-decoration: underline; }
   overflow-wrap: anywhere;
 }
 .query-preview .ghost { margin-left: auto; }
+.query-preview[hidden] { display: none; }
 
 @media (max-width: 640px) {
   .filter-label { flex-basis: 100%; }

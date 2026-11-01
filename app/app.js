@@ -305,6 +305,7 @@ function typeRow() {
   const modeWrap = el("label", "mode");
   modeWrap.append(document.createTextNode("match "));
   const mode = document.createElement("select");
+  mode.setAttribute("aria-label", "Type match");
   for (const v of ["any", "all"]) {
     const o = document.createElement("option");
     o.value = v;
@@ -349,6 +350,7 @@ function numberField(labelText, value, onChange) {
   input.inputMode = "numeric";
   input.value = value;
   input.placeholder = "any";
+  input.setAttribute("aria-label", labelText);
   input.addEventListener("input", () => {
     onChange(input.value);
     updatePreview();
@@ -362,6 +364,7 @@ function selectField(labelText, options, value, onChange) {
   const label = el("label", "num");
   label.append(document.createTextNode(labelText));
   const sel = document.createElement("select");
+  sel.setAttribute("aria-label", labelText);
   for (const [v, text] of options) {
     const o = document.createElement("option");
     o.value = v;

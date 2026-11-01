@@ -106,7 +106,8 @@ src/
   cli.ts                command-line wrapper over core
 app/                    PWA source shell (index.html, app.js, sw.js, manifest)
 public/                 assembled deployable site (built; gitignored)
-tests/                  node:test golden queries
+tests/                  node:test golden queries (engine)
+e2e/                    Playwright end-to-end tests (real browser)
 ```
 
 ## Data model
@@ -141,7 +142,21 @@ npm install
 npm run build:site  # bundle + compile + assemble public/
 npm run serve       # http://localhost:8080/
 npm test            # node:test golden queries
+npm run test:e2e    # Playwright: boots public/ and drives the real UI
+npm run test:all    # both suites
 npm run typecheck   # tsc
+```
+
+`test:e2e` starts its own server (`build:site` + `serve`), so it works from a
+clean checkout. The suite runs against **Chromium on desktop and mobile**
+(Pixel 5) and covers: dataset boot, typed queries, every visual filter and the
+syntax it emits, query/filter composition, clear/collapse, horizontal overflow,
+the syntax primer, and offline operation via the service worker.
+
+First run needs the browser once:
+
+```bash
+npx playwright install chromium
 ```
 
 ## Attribution

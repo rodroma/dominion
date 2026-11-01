@@ -1,5 +1,5 @@
 /* Dominion Search service worker: precache the app + bundle, cache images at runtime. */
-const VERSION = "v6";
+const VERSION = "v7";
 const SHELL = `shell-${VERSION}`;
 const IMAGES = `images-${VERSION}`;
 
