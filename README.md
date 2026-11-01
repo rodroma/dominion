@@ -76,6 +76,11 @@ npm run serve       # http://localhost:8080/  (serves public/)
 The service worker precaches the app and the dataset (all queries offline,
 <1 ms) and runtime-caches card images from the wiki. Installable; works offline.
 
+The search screen has a **visual filter bar** (type, expansion, cost, potion,
+debt, edition, traits). Every click appends real query syntax to the live
+`query` line, so the filters double as a syntax tutor; typed queries and
+filters are AND-ed together.
+
 ## Deploying
 
 The app is 100% static: no server, no database, no build-time API. Publish the
