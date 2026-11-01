@@ -40,6 +40,10 @@ npm run build:site     # npm run build && npm run compile && assemble public/
 
 Free, **unlimited bandwidth**, global edge, previews per branch, custom headers.
 
+> Pick **one** deploy path: Cloudflare's Git integration **or** the GitHub
+> Actions gate below. Running both deploys twice, and the Git integration
+> ignores test results.
+
 **Connect via the dashboard:**
 
 1. Cloudflare dashboard → **Workers & Pages** → **Create** → **Connect to Git**
@@ -77,6 +81,27 @@ and the unhashed `data/bundle.json` revalidate so updates land.
 > `npm ci --include=dev && npm run build:site` as the build command.
 
 Custom domain + automatic HTTPS are available in the Worker's settings.
+
+#### Tests before deploy (GitHub Actions)
+
+`.github/workflows/ci.yml` runs typecheck + unit + Playwright e2e on every PR
+and on pushes to `main`. Its `deploy` job runs only after `test` passes and
+only for `main`, so a red test blocks the deploy.
+
+One-time setup:
+
+1. Add repository secrets:
+   - `CLOUDFLARE_API_TOKEN` — API token with **Workers Scripts: Edit**
+     (and account read).
+   - `CLOUDFLARE_ACCOUNT_ID` — found in the Cloudflare dashboard URL.
+2. **Turn off Cloudflare's own Git builds** for the Worker
+   (Worker → Settings → Builds → disconnect the Git repo). Otherwise
+   Cloudflare deploys on push before Actions finishes, bypassing the gate.
+3. Push to `main`. Actions runs the suite, then `wrangler deploy`s.
+
+Until the secrets exist the deploy step is skipped with a notice, so the
+workflow still passes. If you'd rather keep Cloudflare's Git integration,
+delete the `deploy` job — but then tests no longer gate the deploy.
 
 #### Classic Pages instead
 

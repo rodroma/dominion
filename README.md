@@ -87,6 +87,11 @@ The app is 100% static: no server, no database, no build-time API. Publish the
 `public/` directory produced by `npm run build:site`. See **HOSTING.md** for a
 comparison of options.
 
+CI (`.github/workflows/ci.yml`) runs typecheck + unit + e2e on every PR and on
+pushes to `main`; the Cloudflare deploy job is gated on those tests. See
+**HOSTING.md → Tests before deploy** for the one-time secrets and the note to
+disable Cloudflare's own Git builds (otherwise it deploys without waiting).
+
 ## Layout
 
 ```
